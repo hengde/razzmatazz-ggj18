@@ -49,25 +49,25 @@ namespace IBM.Watson.DeveloperCloud.Debug
         /// <param name="log">The log record.</param>
         public void ProcessLog(LogRecord log)
         {
-            if (log._level >= Level)
-            {
-                string logString = string.Format("[{0}][{1}][{2}] {3}",
-                                                 log._timeStamp.ToString("MM/dd/yyyy HH:mm:ss"),
-                                                 log._subSystem, log._level.ToString(), log._message);
-
-                if (log._level == LogLevel.ERROR || log._level == LogLevel.CRITICAL)
-                {
-                    UnityEngine.Debug.LogError(logString);
-                }
-                else if (log._level == LogLevel.WARNING)
-                {
-                    UnityEngine.Debug.LogWarning(logString);
-                }
-                else
-                {
-                    UnityEngine.Debug.Log(logString);
-                }
-            }
+//            if (log._level >= Level)
+//            {
+//                string logString = string.Format("[{0}][{1}][{2}] {3}",
+//                                                 log._timeStamp.ToString("MM/dd/yyyy HH:mm:ss"),
+//                                                 log._subSystem, log._level.ToString(), log._message);
+//
+//                if (log._level == LogLevel.ERROR || log._level == LogLevel.CRITICAL)
+//                {
+//                    UnityEngine.Debug.LogError(logString);
+//                }
+//                else if (log._level == LogLevel.WARNING)
+//                {
+//                    UnityEngine.Debug.LogWarning(logString);
+//                }
+//                else
+//                {
+//                    UnityEngine.Debug.Log(logString);
+//                }
+//            }
         }
         #endregion
     }
