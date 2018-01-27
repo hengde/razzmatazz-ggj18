@@ -21,13 +21,26 @@ public class GameManager : MonoBehaviour {
 	}
 		
 	public GAME_STATE currentScreen;
+	public Text textArea;
 
 	void Awake(){
-		
+		CwalEventManager.instance.AddListener<GetFinalTextEvent>(getText);
 	}
 
 	void OnDestroy(){
 		
+	}
+
+	void getText (GetFinalTextEvent e) {
+		if(e.text.ToLower().Contains("balls")){
+			textArea.text = "hahaha you said balls";
+			Invoke("clearText", 2);
+		}
+
+	}
+
+	void clearText(){
+		textArea.text = "";
 	}
 
 	// Use this for initialization
