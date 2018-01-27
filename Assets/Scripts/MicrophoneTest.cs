@@ -54,7 +54,7 @@ public class MicrophoneTest : MonoBehaviour {
 //				Debug.Log(sampleData[i]);
 //				texts[clips.Count - 1].text += sampleData[i]+"\n";
 //			}
-			texts[clips.Count-1].text = clips[clips.Count-1].frequency + " ";
+			// texts[clips.Count-1].text = clips[clips.Count-1].frequency + " ";
 		}
 
 		if(aSource.isPlaying){

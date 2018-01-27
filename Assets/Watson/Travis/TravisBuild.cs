@@ -32,10 +32,10 @@ public static class RunTravisBuild
     "Assets/Watson/Examples/WidgetExamples/ExampleLanguageTranslator.unity"
   };
 
-  static public void OSX()
-  {
-	BuildPipeline.BuildPlayer(BuildScenes, Application.dataPath + "TestBuildOSX", BuildTarget.StandaloneOSX, BuildOptions.None);
-  }
+  // static public void OSX()
+  // {
+	// BuildPipeline.BuildPlayer(BuildScenes, Application.dataPath + "TestBuildOSX", BuildTarget.StandaloneOSX, BuildOptions.None);
+  // }
 
   static public void Windows()
   {

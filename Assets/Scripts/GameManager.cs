@@ -20,11 +20,24 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 		
-	public GAME_STATE currentScreen;
+	public GAME_STATE currentState;
 	public Text textArea;
+
+	public DialoguePrompt initialPrompt;
+	public DialoguePrompt currentPrompt;
+
+	AudioSource aSource;
+
+	private delegate void stateUpdate();
+	private stateUpdate StateUpdate;
 
 	void Awake(){
 		CwalEventManager.instance.AddListener<GetFinalTextEvent>(getText);
+		aSource =GetComponent<AudioSource>();
+	}
+
+	void Start(){
+		setAndPlayPrompt(initialPrompt);
 	}
 
 	void OnDestroy(){
@@ -32,20 +45,66 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void getText (GetFinalTextEvent e) {
-		if(e.text.ToLower().Contains("balls")){
-			textArea.text = "hahaha you said balls";
-			Invoke("clearText", 2);
+		Debug.Log("GOT TEXT");
+		if(currentState == GAME_STATE.WAIT_FOR_INPUT){
+			checkTextForKeyWords(e.text);
 		}
+	}
 
+	void checkTextForKeyWords(string text){
+		Debug.Log("CHECKING"+text);
+		bool gotMatch = false;
+		if(currentPrompt.keywords.Length > 0){
+			for(int i=0; i< currentPrompt.keywords.Length; i++){
+				Debug.Log("CHECK "+currentPrompt.keywords[i]);
+				if(text.ToLower().Contains(currentPrompt.keywords[i].ToLower())) {
+					Debug.Log("MATCH");
+					setAndPlayPrompt(currentPrompt.links[i]);
+					gotMatch = true;
+					break;
+				}
+			}
+			if(!gotMatch){
+				setAndPlayPrompt(currentPrompt.defaultLink);
+			}
+		} else {
+			setAndPlayPrompt(currentPrompt.defaultLink);
+		}
+	}
+
+	void setAndPlayPrompt(DialoguePrompt newPrompt) { 
+		
+		currentPrompt = newPrompt;
+		aSource.clip = newPrompt.speech;
+		aSource.Play();
+		setGameState(GAME_STATE.SPEAKING);
 	}
 
 	void clearText(){
 		textArea.text = "";
 	}
 
-	// Use this for initialization
-	void Start () {
-		
+	void Update () {
+		if(StateUpdate != null){
+			StateUpdate();
+		}
+	}
+
+	void NoneUpdate(){}
+
+	void WaitForInputUpdate(){
+
+	}
+
+	void SpeakingUpdate(){
+		if(!aSource.isPlaying){
+			setGameState(GAME_STATE.NONE);
+			Invoke("allowInput", 1);
+		}
+	}
+
+	void allowInput(){
+		setGameState(GAME_STATE.WAIT_FOR_INPUT);
 	}
 
 	// Update is called once per frame
@@ -53,24 +112,23 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	public void setScreenState(GAME_STATE newState) {
+	public void setGameState(GAME_STATE newState) {
 //		Debug.Log(newState);
-		currentScreen = newState;
+		currentState = newState;
 		switch(newState){
-		case GAME_STATE.LEVEL: 
-			
-		case GAME_STATE.LEVEL_SELECT:
-			
+		case GAME_STATE.NONE: 
+			StateUpdate = NoneUpdate;
 			break;
-		case GAME_STATE.MAP:
-			
+		case GAME_STATE.WAIT_FOR_INPUT:
+			StateUpdate = WaitForInputUpdate;
 			break;
-		case GAME_STATE.TITLE:
-
+		case GAME_STATE.SPEAKING:
+			StateUpdate = SpeakingUpdate;
 			break;
+		
 		}
 	}
 
 }
 	
-public enum GAME_STATE{TITLE,MAP,LEVEL_SELECT,LEVEL};
+public enum GAME_STATE{NONE, WAIT_FOR_INPUT, SPEAKING};
