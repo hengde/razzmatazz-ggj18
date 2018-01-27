@@ -7,16 +7,16 @@ public class GameEvent
 	public delegate void Handler(GameEvent e);
 }
 
-public class EventManager
+public class CwalEventManager
 {
-	static EventManager instanceInternal = null;
-	public static EventManager instance
+	static CwalEventManager instanceInternal = null;
+	public static CwalEventManager instance
 	{
 		get
 		{
 			if (instanceInternal == null)
 			{
-				instanceInternal = new EventManager();
+				instanceInternal = new CwalEventManager();
 			}
 
 			return instanceInternal;

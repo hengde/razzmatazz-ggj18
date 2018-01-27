@@ -23,3 +23,11 @@ public class PlayerHitLockedStageEvent : GameEvent {
 public class ReturnedToMapEvent : GameEvent {
 
 }
+
+public class GetFinalTextEvent : GameEvent {
+	public string text;
+
+	public GetFinalTextEvent(string t){
+		text = t;
+	}
+}
