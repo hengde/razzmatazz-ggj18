@@ -2,12 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialoguePrompt : MonoBehaviour {
-
-	public AudioClip speech;
-	public string [] keywords;
-	public DialoguePrompt [] links;
-	public DialoguePrompt defaultLink;
+public class Car : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
