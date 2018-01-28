@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
 	void checkTextForKeyWords(string text){
 		Debug.Log(text+" "+myCar.getSolutionKeywords());
 		if(text.ToLower().Contains(myCar.getSolutionKeywords())){
+			setGameState(GAME_STATE.SPEAKING);
 			myCar.solveCurrentProblem();
 		} else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
 			myCar.reportState(0);
