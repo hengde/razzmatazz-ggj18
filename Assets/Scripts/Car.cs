@@ -30,7 +30,7 @@ public class Car : MonoBehaviour {
 	void Awake () {
 		setCurrentProblem();
 		Debug.Log(getSolutionKeywords()[0] + " " +getSolutionKeywords()[2]);
-		// currentProblems = Random.Range(2,4);
+		countProblemsRemaining = Random.Range(2,4);
 	}
 	
 	// Update is called once per frame
@@ -119,8 +119,9 @@ public class Car : MonoBehaviour {
 			}
 			setCurrentProblem();
 			PlayAudioTask t = new PlayAudioTask("system_ops_at");
-			t.Then();
-
+			t.Then(new PlayAudioTask(percentFile))
+				.Then(new PlayAudioTask("Audio/next_problem"))
+				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
 		}
 	}
 

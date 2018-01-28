@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour {
 			incorrectCommandGiven();
 		}
 		else if (successKeyWordsFound >= 2){
+			setGameState(GAME_STATE.SPEAKING);
 			myCar.solveCurrentProblem();
 		} 
 		else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
