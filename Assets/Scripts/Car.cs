@@ -93,10 +93,35 @@ public class Car : MonoBehaviour {
 	}
 
 	public void solveCurrentProblem(){
-		if(currentProblems ==
-		GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
-		GameManager.instance.aSource.Play();
-		GameManager.instance.setGameState(GAME_STATE.VICTORY);
+		countProblemsRemaining -= 1;
+		if(countProblemsRemaining == 0) {
+			GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
+			GameManager.instance.aSource.Play();
+			GameManager.instance.setGameState(GAME_STATE.VICTORY);
+		} else {
+			string percentFile = "Audio/";
+			switch(countProblemsRemaining){
+			case 1:
+				percentFile+="eighty_percent";
+				break;
+			case 2:
+				percentFile+="sixty_percent";
+				break;
+			case 3:
+				percentFile+="forty_percent";
+				break;
+			case 4:
+				percentFile+="twenty_percent";
+				break;
+			default:
+				percentFile+="twenty_percent";
+				break;
+			}
+			setCurrentProblem();
+			PlayAudioTask t = new PlayAudioTask("system_ops_at");
+			t.Then()
+
+		}
 	}
 
 	public string getSolutionKeywords(){
