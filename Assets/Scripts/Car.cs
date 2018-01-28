@@ -89,52 +89,27 @@ public class Car : MonoBehaviour {
 		}
 	}
 
-	public string getSolutionKeywords(){
+	public string[] getSolutionKeywords(){
 		switch(currentProblemType){
 		case "part_not_working":
+			int row = 0;
+			int col = 0;
 			switch(currentProblemPart){
-			case "brake_shift":
-				switch(currentProblemReported){
-				case "emitting_smoke":
-					return brakeShift2005 ? "rotary" : "twister";
-				case "stuck_in_place":
-					return !carburetorValveOpen ? "throttle" : "microwave";
-				case "shaking_uncontrollably":
-					return !brakeShift2005 ? "battery" : "aquatic belt";
-				default:
-					return "battery";
-				}
-
-			case "transmission":
-				switch(currentProblemReported){
-				case "emitting_smoke":
-					return brakeShift2005 ? "update" : "quantum";
-				case "stuck_in_place":
-					return !carburetorValveOpen ? "macro engine" : "gear plugs";
-				case "shaking_uncontrollably":
-					return !brakeShift2005 ? "spring bulb" : "prop cylinder";
-				default:
-					return "spring bulb";
-				}
-				
-			case "carburetor":
-				switch(currentProblemReported){
-				case "emitting_smoke":
-					return brakeShift2005 ? "calibrator" : "heating valve";
-				case "stuck_in_place":
-					return !carburetorValveOpen ? "electrical" : "generator";
-				case "shaking_uncontrollably":
-					return !brakeShift2005 ? "stereo pump" : "activate";
-				default:
-					return "stereo pump";
-				}
-
+				case "brake_shift":  row = 0; break;
+				case "transmission": row = 1; break;
+				case "carburetor":   row = 2; break;
 			}
-			break;
+			switch(currentProblemReported){
+				case "emitting_smoke":         col = 0; break;
+				case "stuck_in_place":         col = 1; break;
+				case "shaking_uncontrollably": col = 2; break;
+			}
+			string[] strings = CarProblems.GetKeywordsForPartProblem(row, col, brakeShift2005, !carburetorValveOpen, !brakeShift2005);
+			return strings;
 		default:
 			break;
 		}
-		return "battery";
+		return new string[1] { "battery" } ;
 	}
 
 }

@@ -61,7 +61,23 @@ public class GameManager : MonoBehaviour {
 	void checkTextForKeyWords(string text){
 		setGameState(GAME_STATE.SPEAKING);
 		Debug.Log(text+" "+myCar.getSolutionKeywords());
-		if(text.ToLower().Contains(myCar.getSolutionKeywords())){
+
+		int failureKeywordsFound = 0;
+		foreach(string s in CarProblems.AllKeywords()){
+			if ( text.ToLower().Contains(s.ToLower()) ) {
+				failureKeywordsFound++;
+			}
+		}
+
+		int successKeyWordsFound = 0;
+		foreach(string s in myCar.getSolutionKeywords()){
+			if ( text.ToLower().Contains(s.ToLower()) ) {
+				successKeyWordsFound++;
+				failureKeywordsFound--;
+			}
+		}
+
+		if(successKeyWordsFound >= 2){
 			aSource.clip = Resources.Load<AudioClip>("Audio/win");
 			aSource.Play();
 			setGameState(GAME_STATE.VICTORY);
