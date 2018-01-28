@@ -133,6 +133,11 @@ public class Car : MonoBehaviour {
 		currentProblemType = problemTypes[Random.Range(0,problemTypes.Length)];
 		currentProblemPart = problemParts[Random.Range(0,problemParts.Length)];
 		currentProblemReported = problemReported[Random.Range(0,problemReported.Length)];
+		
+		currentWarningFrame = possibleWarningFrames[Random.Range(0,possibleWarningFrames.Length)];
+		currentStarPoints = possibleStarPointCounts[Random.Range(0,possibleStarPointCounts.Length)];
+		numberInStar = GenerateCenterNumber(currentStarPoints);
+
 		brakeShift2005 = Random.Range(0,2) == 1 ? true : false;
 		carburetorValveOpen = Random.Range(0,2) == 1 ? true : false;
 		transmissionInFirstGear = Random.Range(0,2) ==1 ? true : false;
