@@ -8,7 +8,7 @@ public class Car : MonoBehaviour {
 	private string [] problemTypes = new string[] {
 		ProblemTypes.PartNotWorking,
 	};
-	string currentProblemType;
+	public string currentProblemType;
 
 	// PART NOT WORKING
 	public string [] problemParts;
