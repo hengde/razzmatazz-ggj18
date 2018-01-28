@@ -110,31 +110,53 @@ public class Car : MonoBehaviour {
 			GameManager.instance.aSource.Play();
 			GameManager.instance.setGameState(GAME_STATE.VICTORY);
 		} else {
-			string percentFile = "Audio/";
-			switch(countProblemsRemaining){
-			case 1:
-				percentFile+="eighty_percent";
-				break;
-			case 2:
-				percentFile+="sixty_percent";
-				break;
-			case 3:
-				percentFile+="forty_percent";
-				break;
-			case 4:
-				percentFile+="twenty_percent";
-				break;
-			default:
-				percentFile+="twenty_percent";
-				break;
-			}
-			setCurrentProblem();
-			PlayAudioTask t = new PlayAudioTask("system_ops_at");
+			nextProblem();
+		}
+	}
+
+	public void answerIncorrectly(){
+		//		PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
+		//		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
+		//		TaskManager.instance.AddTask(t);
+		countProblemsRemaining +=1;
+		setCurrentProblem();
+
+
+	}
+
+	public void nextProblem(){
+		setCurrentProblem();
+		string percentFile = "Audio/";
+		switch(countProblemsRemaining){
+		case 1:
+			percentFile+="eighty_percent";
+			break;
+		case 2:
+			percentFile+="sixty_percent";
+			break;
+		case 3:
+			percentFile+="forty_percent";
+			break;
+		case 4:
+			percentFile+="twenty_percent";
+			break;
+		default:
+			percentFile+="zero_percent";
+			break;
+		}
+		if(countProblemsRemaining == 5){
+			loseGame();
+		} else {
+			PlayAudioTask t = new PlayAudioTask("Audio/system_ops_at");
 			t.Then(new PlayAudioTask(percentFile))
 				.Then(new PlayAudioTask("Audio/next_problem"))
 				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
 			TaskManager.instance.AddTask(t);
 		}
+	}
+
+	public void loseGame(){
+
 	}
 
 	public string[] getSolutionKeywords(){
