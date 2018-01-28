@@ -29,7 +29,7 @@ public class Car : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		setCurrentProblem();
-		Debug.Log(getSolutionKeywords());
+		Debug.Log(getSolutionKeywords()[0] + " " +getSolutionKeywords()[2]);
 		countProblemsRemaining = Random.Range(2,4);
 	}
 	
@@ -65,7 +65,7 @@ public class Car : MonoBehaviour {
 			audioPath += transmissionInFirstGear ? "transmission_first" : "transmission_third";
 			break;
 		default:
-			audioPath += "transmission_first";
+			audioPath += didntUnderstand;
 			break;
 		}
 
@@ -99,44 +99,26 @@ public class Car : MonoBehaviour {
 			GameManager.instance.aSource.Play();
 			GameManager.instance.setGameState(GAME_STATE.VICTORY);
 		} else {
-			nextProblem();
-		}
-	}
-
-	public void answerIncorrectly(){
-//		PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
-//		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
-//		TaskManager.instance.AddTask(t);
-		countProblemsRemaining +=1;
-		setCurrentProblem();
-
-
-	}
-
-	public void nextProblem(){
-		setCurrentProblem();
-		string percentFile = "Audio/";
-		switch(countProblemsRemaining){
-		case 1:
-			percentFile+="eighty_percent";
-			break;
-		case 2:
-			percentFile+="sixty_percent";
-			break;
-		case 3:
-			percentFile+="forty_percent";
-			break;
-		case 4:
-			percentFile+="twenty_percent";
-			break;
-		default:
-			percentFile+="zero_percent";
-			break;
-		}
-		if(countProblemsRemaining == 5){
-			loseGame();
-		} else {
-			PlayAudioTask t = new PlayAudioTask("Audio/system_ops_at");
+			string percentFile = "Audio/";
+			switch(countProblemsRemaining){
+			case 1:
+				percentFile+="eighty_percent";
+				break;
+			case 2:
+				percentFile+="sixty_percent";
+				break;
+			case 3:
+				percentFile+="forty_percent";
+				break;
+			case 4:
+				percentFile+="twenty_percent";
+				break;
+			default:
+				percentFile+="twenty_percent";
+				break;
+			}
+			setCurrentProblem();
+			PlayAudioTask t = new PlayAudioTask("system_ops_at");
 			t.Then(new PlayAudioTask(percentFile))
 				.Then(new PlayAudioTask("Audio/next_problem"))
 				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
@@ -144,56 +126,27 @@ public class Car : MonoBehaviour {
 		}
 	}
 
-	public void loseGame(){
-
-	}
-
-	public string getSolutionKeywords(){
+	public string[] getSolutionKeywords(){
 		switch(currentProblemType){
 		case "part_not_working":
+			int row = 0;
+			int col = 0;
 			switch(currentProblemPart){
-			case "brake_shift":
-				switch(currentProblemReported){
-				case "emitting_smoke":
-					return brakeShift2005 ? "rotary" : "twister";
-				case "stuck_in_place":
-					return !carburetorValveOpen ? "throttle" : "microwave";
-				case "shaking_uncontrollably":
-					return !brakeShift2005 ? "battery" : "aquatic belt";
-				default:
-					return "battery";
-				}
-
-			case "transmission":
-				switch(currentProblemReported){
-				case "emitting_smoke":
-					return brakeShift2005 ? "update" : "quantum";
-				case "stuck_in_place":
-					return !carburetorValveOpen ? "macro engine" : "gear plugs";
-				case "shaking_uncontrollably":
-					return !brakeShift2005 ? "spring bulb" : "prop cylinder";
-				default:
-					return "spring bulb";
-				}
-				
-			case "carburetor":
-				switch(currentProblemReported){
-				case "emitting_smoke":
-					return brakeShift2005 ? "calibrator" : "heating valve";
-				case "stuck_in_place":
-					return !carburetorValveOpen ? "electrical" : "generator";
-				case "shaking_uncontrollably":
-					return !brakeShift2005 ? "stereo pump" : "activate";
-				default:
-					return "stereo pump";
-				}
-
+				case "brake_shift":  row = 0; break;
+				case "transmission": row = 1; break;
+				case "carburetor":   row = 2; break;
 			}
-			break;
+			switch(currentProblemReported){
+				case "emitting_smoke":         col = 0; break;
+				case "stuck_in_place":         col = 1; break;
+				case "shaking_uncontrollably": col = 2; break;
+			}
+			string[] strings = CarProblems.GetKeywordsForPartProblem(row, col, brakeShift2005, !carburetorValveOpen, !brakeShift2005);
+			return strings;
 		default:
 			break;
 		}
-		return "battery";
+		return new string[1] { "battery" } ;
 	}
 
 }
