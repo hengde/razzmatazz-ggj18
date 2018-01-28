@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+	public ExampleStreaming Streamer;
+
 	//singleton things
 	private static GameManager _instance;
 	public static GameManager instance
@@ -131,9 +133,9 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void allowInput(){
-		setGameState(GAME_STATE.WAIT_FOR_INPUT);
-	}
+	// void allowInput(){
+	// 	setGameState(GAME_STATE.WAIT_FOR_INPUT);
+	// }
 
 	void VictoryUpdate(){
 
@@ -152,9 +154,15 @@ public class GameManager : MonoBehaviour {
 			StateUpdate = NoneUpdate;
 			break;
 		case GAME_STATE.WAIT_FOR_INPUT:
+			Debug.Log("wait for input");
+			Streamer.Active = true;
 			StateUpdate = WaitForInputUpdate;
 			break;
 		case GAME_STATE.SPEAKING:
+			Debug.Log("speaking");
+			if (Streamer._speechToText != null){
+				Streamer.Active = false;
+			}
 			StateUpdate = SpeakingUpdate;
 			break;
 		case GAME_STATE.VICTORY:

@@ -38,7 +38,7 @@ public class ExampleStreaming : MonoBehaviour
     private int _recordingBufferSize = 1;
     private int _recordingHZ = 22050;
 
-    private SpeechToText _speechToText;
+    public SpeechToText _speechToText;
 
     void Start()
     {
@@ -60,6 +60,7 @@ public class ExampleStreaming : MonoBehaviour
         {
             if (value && !_speechToText.IsListening)
             {
+                Debug.Log("Start listening");
                 _speechToText.DetectSilence = true;
                 _speechToText.EnableWordConfidence = true;
                 _speechToText.EnableTimestamps = true;
@@ -76,6 +77,7 @@ public class ExampleStreaming : MonoBehaviour
             }
             else if (!value && _speechToText.IsListening)
             {
+                Debug.Log("stop listening");
                 _speechToText.StopListening();
             }
         }
