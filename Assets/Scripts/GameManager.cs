@@ -191,6 +191,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void endCall(EndCallEvent e){
+		timeUntilCallStarts = 15;
 		setGameState(GAME_STATE.NOT_IN_CALL);
 	}
 
@@ -238,6 +239,8 @@ public class GameManager : MonoBehaviour {
 			StateUpdate = VictoryUpdate;
 			break;
 		case GAME_STATE.NOT_IN_CALL:
+			inCallScreen.SetActive(false);
+			ringingScreen.SetActive(false);
 			lastCallEndedTime = Time.time;
 			StateUpdate = NotInCallUpdate;
 			break;
