@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Car : MonoBehaviour {
 
-	public string [] problemTypes;
+	private string [] problemTypes = new string[] {
+		ProblemTypes.PartNotWorking,
+	};
 	public string [] problemParts;
 	public string [] problemReported;
 	public string [] problemSounds;
@@ -13,6 +15,15 @@ public class Car : MonoBehaviour {
 	bool brakeShift2005;
 	bool carburetorValveOpen;
 	bool transmissionInFirstGear;
+
+	private string[] carManufacturers = new string[] {
+		Manufacturers.Toyota,
+		Manufacturers.Honda,
+		Manufacturers.Subaru,
+	};
+	bool isToyotaCorolla;
+	bool isHondaCivic;
+	bool isSubaruOutback;
 
 	string currentProblemType;
 	string currentProblemPart;
@@ -77,7 +88,7 @@ public class Car : MonoBehaviour {
 	public void playAudioDescriptionOfProblem(){
 		GameManager.instance.setGameState(GAME_STATE.SPEAKING);
 		Debug.Log("hi!");
-		if(currentProblemType == "part_not_working"){
+		if(currentProblemType == ProblemTypes.PartNotWorking){
 			Debug.Log("gorp");
 			string partPath = "Audio/"+currentProblemPart;
 			string reportedPath = "Audio/"+currentProblemReported;
@@ -128,7 +139,7 @@ public class Car : MonoBehaviour {
 
 	public string[] getSolutionKeywords(){
 		switch(currentProblemType){
-		case "part_not_working":
+		case ProblemTypes.PartNotWorking:
 			int row = 0;
 			int col = 0;
 			switch(currentProblemPart){
