@@ -34,3 +34,12 @@ public struct ProblemTypes{
     public const string WarningLight = "warning_light";
     public const string FunnySound = "funny_sound";
 }
+
+public struct ReportTypes{
+    public const int brakeShift = 0;
+    public const int valve = 1;
+    public const int transmission = 2;
+    public const int numberInCenter = 3;
+    public const int warningFrame = 4;
+    public const int pointsInStar = 5;
+}

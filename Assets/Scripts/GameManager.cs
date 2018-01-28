@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
+		bool isWarningLight = myCar.currentProblemType == ProblemTypes.WarningLight;
+
 		if(failureKeywordsFound >= 2){
 			Debug.Log("incorrect");
 			incorrectCommandGiven();
@@ -84,14 +86,25 @@ public class GameManager : MonoBehaviour {
 		else if (successKeyWordsFound >= 2){
 			Debug.Log("correct");
 			myCar.solveCurrentProblem();
-		} 
+		}
+ 
 		else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
-			myCar.reportState(0);
+			myCar.reportState(ReportTypes.brakeShift);
 		} else if (text.ToLower().Contains("carburetor valve")) {
-			myCar.reportState(1);
+			myCar.reportState(ReportTypes.valve);
 		} else if (text.ToLower().Contains("transmission")) {
-			myCar.reportState(2);
-		} else if (text.ToLower().Contains("repeat") || text.ToLower().Contains("again") || text.ToLower().Contains("problem")) {
+			myCar.reportState(ReportTypes.transmission);
+		} 
+		
+		else if (isWarningLight && (text.ToLower().Contains("describe") || text.ToLower().Contains("look") || text.ToLower().Contains("looks") )) {
+			myCar.reportState(ReportTypes.warningFrame);
+		} else if ( isWarningLight && (text.ToLower().Contains("points")) ) {
+			myCar.reportState(ReportTypes.pointsInStar);
+		} else if ( isWarningLight && (text.ToLower().Contains("number") || text.ToLower().Contains("center") || text.ToLower().Contains("middle"))) {
+			myCar.reportState(ReportTypes.numberInCenter);
+		}
+		
+		else if (text.ToLower().Contains("repeat") || text.ToLower().Contains("again") || text.ToLower().Contains("problem")) {
 			myCar.playAudioDescriptionOfProblem();
 		} else {
 			// incorrect solution?
