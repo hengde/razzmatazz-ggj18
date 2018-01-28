@@ -33,12 +33,20 @@ public class GameManager : MonoBehaviour {
 	private delegate void stateUpdate();
 	private stateUpdate StateUpdate;
 
+	public float timeUntilCallStarts;
+	public float lastCallEndedTime;
+
+	public GameObject ringingScreen;
+	public GameObject inCallScreen;
+
 	Car myCar;
 
 	void Awake(){
+		CwalEventManager.instance.AddListener<EndCallEvent>(endCall);
 		CwalEventManager.instance.AddListener<GetFinalTextEvent>(getText);
 		aSource =GetComponent<AudioSource>();
 		myCar = GetComponent<Car>();
+		setGameState(GAME_STATE.NOT_IN_CALL);
 	}
 
 	void Start(){
@@ -48,7 +56,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		
+		CwalEventManager.instance.RemoveListener<EndCallEvent>(endCall);
+		CwalEventManager.instance.RemoveListener<GetFinalTextEvent>(getText);
+		inCallScreen.SetActive(false);
+		ringingScreen.SetActive(false);
 	}
 
 	void getText (GetFinalTextEvent e) {
@@ -179,8 +190,32 @@ public class GameManager : MonoBehaviour {
 
 	}
 
+	void endCall(EndCallEvent e){
+		setGameState(GAME_STATE.NOT_IN_CALL);
+	}
+
+	void NotInCallUpdate(){
+		Debug.Log(Time.time - lastCallEndedTime);
+		if(Time.time - lastCallEndedTime > timeUntilCallStarts) {
+			Debug.Log("switch");
+			setGameState(GAME_STATE.RINGING);
+		}
+	}
+
+	void RingingUpdate(){
+
+	}
+
+	public void answerPhone(){
+		inCallScreen.SetActive(true);
+		ringingScreen.SetActive(false);
+		myCar.startCall();
+		aSource.Stop();
+		aSource.loop = false;
+	}
+
 	public void setGameState(GAME_STATE newState) {
-//		Debug.Log(newState);
+		Debug.Log(newState);
 		currentState = newState;
 		switch(newState){
 		case GAME_STATE.NONE: 
@@ -202,10 +237,20 @@ public class GameManager : MonoBehaviour {
 		case GAME_STATE.VICTORY:
 			StateUpdate = VictoryUpdate;
 			break;
-		
+		case GAME_STATE.NOT_IN_CALL:
+			lastCallEndedTime = Time.time;
+			StateUpdate = NotInCallUpdate;
+			break;
+		case GAME_STATE.RINGING:
+			aSource.clip = Resources.Load<AudioClip>("Audio/phone_ring");
+			aSource.loop = true;
+			aSource.Play();
+			ringingScreen.SetActive(true);
+			StateUpdate = RingingUpdate;
+			break;
 		}
 	}
 
 }
 	
-public enum GAME_STATE{NONE, WAIT_FOR_INPUT, SPEAKING, VICTORY};
+public enum GAME_STATE{NONE, WAIT_FOR_INPUT, SPEAKING, VICTORY, NOT_IN_CALL, RINGING};

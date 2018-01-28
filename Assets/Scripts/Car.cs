@@ -95,7 +95,6 @@ public class Car : MonoBehaviour {
 		setCurrentProblem();
 		Debug.Log(getSolutionKeywords()[0] + " " +getSolutionKeywords()[2]);
 		countProblemsRemaining = 3;
-		startCall();
 	}
 	
 	// Update is called once per frame
@@ -103,7 +102,7 @@ public class Car : MonoBehaviour {
 		
 	}
 
-	void startCall(){
+	public void startCall(){
 		Debug.Log("Start call");
 		GameManager.instance.setGameState(GAME_STATE.SPEAKING);
 		PlayAudioTask t = new PlayAudioTask("Audio/identify");
@@ -172,10 +171,13 @@ public class Car : MonoBehaviour {
 	public void solveCurrentProblem(){
 		countProblemsRemaining -= 1;
 		if(countProblemsRemaining == 0) {
-			GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
-			GameManager.instance.aSource.Play();
-			GameManager.instance.setGameState(GAME_STATE.VICTORY);
-			CwalEventManager.instance.Raise(new EndCallEvent());
+			PlayAudioTask t = new PlayAudioTask("Audio/win");
+			t.Then(new ActionTask(()=>CwalEventManager.instance.Raise(new EndCallEvent())));
+			TaskManager.AddTask(t);
+			// GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
+			// GameManager.instance.aSource.Play();
+			// GameManager.instance.setGameState(GAME_STATE.VICTORY);
+			// CwalEventManager.instance.Raise(new EndCallEvent());
 		} else {
 			setCurrentProblem();
 			PlayAudioTask t = new PlayAudioTask("Audio/problem_resolved");
@@ -194,6 +196,7 @@ public class Car : MonoBehaviour {
 		//		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 		//		TaskManager.instance.AddTask(t);
 		batteriesRemaining -= 1;
+		countProblemsRemaining +=1;
 		if(batteriesRemaining == 0){
 			loseGame();
 		} else {

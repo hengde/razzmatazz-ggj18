@@ -11,7 +11,7 @@ public static class CarProblems{
         "Download", "quantum", "shapeshifter", 
         "Shrink", "macro", "engine",
         "Stretch", "gear", "plugs",
-        "Hug", "drive", "bulb",
+        "reroute", "phase", "converters",
         "Mount", "prop", "cylinder",
 
         "Belittle", "micro", "calibrator",
