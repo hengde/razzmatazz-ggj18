@@ -43,6 +43,48 @@ public static class CarProblems{
         "Encrypt", "optic", "switch"
     };
 
+    public static string[] somethingLeakingSolutions = new string[] {
+        "Enlarge", "engine", "shaft",
+        "Decorate", "missing", "decontaminant",
+        "Remodel", "neat", "magic",
+        "Contemplate", "automatic", "thing",
+        "Jiggle", "Miniscule", "Arm",
+        "Tweak", "Overbearing", "Radio",
+        "Dangle", "postindustrial", "hand",
+        "Equip", "object", "communicator",
+        "Modify", "muscle", "bar",
+        "Understand", "Global", "Handle",
+        "Integrate", "Universal", "Dongle",
+        "Acclimate", "Local", "Bearing",
+        "Downplay", "positional", "tank",
+        "Pinch", "miserable", "wingtip",
+        "Press", "enthusiastic", "spoiler",
+        "Sideswipe", "Vibrating", "System",
+        "Domesticate", "Strobing", "Cone",
+        "Empty", "Hydraulic", "Organ",
+    };
+
+    public static string[] warningLightSolutions = new string[]{        
+        "Reboot", "hydro", "flim",
+        "Amplify", "bone", "Piston",
+        "Replace", "cooling", "pads",
+        "Eject", "spare", "leg",
+        "Translate", "Zero", "handle",
+        "Rotate", "Imported", "Pole",
+        "TurboCharge", "hyper", "grinder",
+        "Restart", "mono", "battery",
+        "Render", "Torque", "Fluid",
+        "Boost", "leaky", "keypad",
+        "Override", "prehistoric", "locks",
+        "Refill", "unpaid", "Axle",
+        "Calibrate", "fuel", "calibrator",
+        "Uninstall", "spring", "magic",
+        "Undermine", "glove", "box",
+        "Coordinate", "heavy", "chain",
+        "Change", "Fire", "Output",
+        "Flip", "messy", "cog",
+    };
+
     public static string[] GetKeywordsForPartProblem(int row, int col, bool b0, bool b1, bool b2){
         string[] retStrings = new string[3];
         int indexInChart = getIndexInChart(row, col, b0, b1, b2);
@@ -61,10 +103,30 @@ public static class CarProblems{
         return retStrings;
     }
 
+    public static string[] GetKeywordsForLeakingProblem(int row, int col, bool b0, bool b1, bool b2){
+        string[] retStrings = new string[3];
+        int indexInChart = getIndexInChart(row, col, b0, b1, b2);
+        retStrings[0] = somethingLeakingSolutions[indexInChart];
+        retStrings[1] = somethingLeakingSolutions[indexInChart+1];
+        retStrings[2] = somethingLeakingSolutions[indexInChart+2];
+        return retStrings;
+    }
+
+    public static string[] GetKeywordsForLightProblem(int row, int col, bool b0, bool b1, bool b2){
+        string[] retStrings = new string[3];
+        int indexInChart = getIndexInChart(row, col, b0, b1, b2);
+        retStrings[0] = warningLightSolutions[indexInChart];
+        retStrings[1] = warningLightSolutions[indexInChart+1];
+        retStrings[2] = warningLightSolutions[indexInChart+2];
+        return retStrings;
+    }
+
     public static string[] AllKeywords(){
         string[] allStrings = new string[
             brokenPartSolutions.Length + 
-            funnySoundSolutions.Length
+            funnySoundSolutions.Length + 
+            somethingLeakingSolutions.Length + 
+            warningLightSolutions.Length
         ];
 
         int j = 0;
@@ -77,6 +139,16 @@ public static class CarProblems{
             allStrings[i+j] = funnySoundSolutions[i];
         };
         j += funnySoundSolutions.Length;
+
+        for(int i = 0; i < somethingLeakingSolutions.Length; i++){
+            allStrings[i+j] = somethingLeakingSolutions[i];
+        };
+        j += somethingLeakingSolutions.Length;
+
+        for(int i = 0; i < warningLightSolutions.Length; i++){
+            allStrings[i+j] = warningLightSolutions[i];
+        };
+        j += warningLightSolutions.Length;
 
         return allStrings;
     }
