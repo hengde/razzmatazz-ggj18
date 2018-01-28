@@ -23,11 +23,14 @@ public class Car : MonoBehaviour {
 
 	string didntUnderstand = "didnt_understand";
 
+	int countProblemsRemaining;
+	const int MAX_PROBLEMS = 5;
 
 	// Use this for initialization
 	void Awake () {
 		setCurrentProblem();
 		Debug.Log(getSolutionKeywords());
+		currentProblems = Random.Range(2,4);
 	}
 	
 	// Update is called once per frame
@@ -87,6 +90,13 @@ public class Car : MonoBehaviour {
 				.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 			TaskManager.instance.AddTask(t);
 		}
+	}
+
+	public void solveCurrentProblem(){
+		if(currentProblems ==
+		GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
+		GameManager.instance.aSource.Play();
+		GameManager.instance.setGameState(GAME_STATE.VICTORY);
 	}
 
 	public string getSolutionKeywords(){

@@ -59,9 +59,7 @@ public class GameManager : MonoBehaviour {
 	void checkTextForKeyWords(string text){
 		Debug.Log(text+" "+myCar.getSolutionKeywords());
 		if(text.ToLower().Contains(myCar.getSolutionKeywords())){
-			aSource.clip = Resources.Load<AudioClip>("Audio/win");
-			aSource.Play();
-			setGameState(GAME_STATE.VICTORY);
+			myCar.solveCurrentProblem();
 		} else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
 			myCar.reportState(0);
 		} else if (text.ToLower().Contains("carburetor valve")) {
