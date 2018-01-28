@@ -27,7 +27,7 @@ public class Car : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		setCurrentProblem();
-		Debug.Log(getSolutionKeywords());
+		Debug.Log(getSolutionKeywords()[0] + " " +getSolutionKeywords()[2]);
 	}
 	
 	// Update is called once per frame

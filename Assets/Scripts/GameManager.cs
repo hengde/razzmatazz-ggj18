@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
 
 	void checkTextForKeyWords(string text){
 		setGameState(GAME_STATE.SPEAKING);
-		Debug.Log(text+" "+myCar.getSolutionKeywords());
+		Debug.Log(text+" "+myCar.getSolutionKeywords()[0] + " " +myCar.getSolutionKeywords()[2]);
 
 		int failureKeywordsFound = 0;
 		foreach(string s in CarProblems.AllKeywords()){
