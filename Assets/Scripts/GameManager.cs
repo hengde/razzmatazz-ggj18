@@ -77,11 +77,15 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-		if(successKeyWordsFound >= 2){
+		if(failureKeywordsFound >= 2){
+			incorrectCommandGiven();
+		}
+		else if (successKeyWordsFound >= 2){
 			aSource.clip = Resources.Load<AudioClip>("Audio/win");
 			aSource.Play();
 			setGameState(GAME_STATE.VICTORY);
-		} else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
+		} 
+		else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
 			myCar.reportState(0);
 		} else if (text.ToLower().Contains("carburetor valve")) {
 			myCar.reportState(1);
@@ -96,6 +100,11 @@ public class GameManager : MonoBehaviour {
 			t.Then(new ActionTask(()=>setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 			TaskManager.instance.AddTask(t);
 		}
+	}
+
+	void incorrectCommandGiven(){
+		setGameState(GAME_STATE.SPEAKING);
+		// CWAL CODE GOES HERE
 	}
 
 	void oldCheckTextForKeyWords(string text){
