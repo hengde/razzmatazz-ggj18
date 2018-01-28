@@ -774,6 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d83df0012a654544a987aa40e1a8004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Streamer: {fileID: 1646685150}
   currentState: 0
   textArea: {fileID: 1855915844}
   initialPrompt: {fileID: 2081706277}
@@ -883,8 +884,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d622c46613c4ebd89e61508e437e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  problemTypes:
-  - part_not_working
   problemParts:
   - brake_shift
   - transmission
@@ -893,8 +892,6 @@ MonoBehaviour:
   - emitting_smoke
   - stuck_in_place
   - shaking_uncontrollably
-  problemSounds: []
-  substances: []
 --- !u!114 &1182315907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,7 +1003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -142, y: 78}
+  m_AnchoredPosition: {x: -142, y: 24.720211}
   m_SizeDelta: {x: 2673.1, y: 1991.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1304179467

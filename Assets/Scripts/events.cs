@@ -31,3 +31,10 @@ public class GetFinalTextEvent : GameEvent {
 		text = t;
 	}
 }
+
+public class EndCallEvent : GameEvent {
+	
+	public EndCallEvent(){
+
+	}
+}

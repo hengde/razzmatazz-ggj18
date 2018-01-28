@@ -116,7 +116,7 @@ public class Car : MonoBehaviour {
 	}
 
 	void setCurrentProblem() {
-		currentProblemType = problemTypes[Random.Range(0,problemParts.Length)];
+		currentProblemType = problemTypes[Random.Range(0,problemTypes.Length)];
 		currentProblemPart = problemParts[Random.Range(0,problemParts.Length)];
 		currentProblemReported = problemReported[Random.Range(0,problemReported.Length)];
 		brakeShift2005 = Random.Range(0,2) == 1 ? true : false;
@@ -175,8 +175,17 @@ public class Car : MonoBehaviour {
 			GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
 			GameManager.instance.aSource.Play();
 			GameManager.instance.setGameState(GAME_STATE.VICTORY);
+			CwalEventManager.instance.Raise(new EndCallEvent());
 		} else {
-			nextProblem();
+			setCurrentProblem();
+			PlayAudioTask t = new PlayAudioTask("Audio/problem_resolved");
+			t.Then(new PlayAudioTask("Audio/system_ops_at"))
+				.Then(new PlayAudioTask(getPercentFile()))
+				.Then(new PlayAudioTask(getNumBatteriesFile()))
+				.Then(new PlayAudioTask("Audio/batteries_remaining"))
+				.Then(new PlayAudioTask("Audio/next_problem"))
+				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
+			TaskManager.instance.AddTask(t);
 		}
 	}
 
@@ -184,14 +193,41 @@ public class Car : MonoBehaviour {
 		//		PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
 		//		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 		//		TaskManager.instance.AddTask(t);
-		countProblemsRemaining +=1;
-		setCurrentProblem();
-
-
+		batteriesRemaining -= 1;
+		if(batteriesRemaining == 0){
+			loseGame();
+		} else {
+			setCurrentProblem();
+			PlayAudioTask t = new PlayAudioTask("Audio/unable_to_resolve");
+			t.Then(new PlayAudioTask("Audio/system_ops_at"))
+				.Then(new PlayAudioTask(getPercentFile()))
+				.Then(new PlayAudioTask(getNumBatteriesFile()))
+				.Then(new PlayAudioTask("Audio/batteries_remaining"))
+				.Then(new PlayAudioTask("Audio/next_problem"))
+				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
+			TaskManager.instance.AddTask(t);
+		}
 	}
 
-	public void nextProblem(){
-		setCurrentProblem();
+	string getNumBatteriesFile(){
+		switch(batteriesRemaining){
+			case 1:
+				return "Audio/one";
+				break;
+			case 2:
+				return "Audio/two";
+				break;
+			case 3:
+				return "Audio/three";
+				break;
+			default:
+				return "Audio/zero";
+				break;
+		}
+	}
+
+	string getPercentFile(){
+
 		string percentFile = "Audio/";
 		switch(countProblemsRemaining){
 		case 1:
@@ -210,11 +246,16 @@ public class Car : MonoBehaviour {
 			percentFile+="zero_percent";
 			break;
 		}
+		return percentFile;
+	}
+
+	public void nextProblem(){
+		setCurrentProblem();
 		if(countProblemsRemaining == 5){
 			loseGame();
 		} else {
 			PlayAudioTask t = new PlayAudioTask("Audio/system_ops_at");
-			t.Then(new PlayAudioTask(percentFile))
+			t.Then(new PlayAudioTask(getPercentFile()))
 				.Then(new PlayAudioTask("Audio/next_problem"))
 				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
 			TaskManager.instance.AddTask(t);
@@ -222,7 +263,18 @@ public class Car : MonoBehaviour {
 	}
 
 	public void loseGame(){
+		PlayAudioTask t = new PlayAudioTask("Audio/zero");
+		t.Then(new PlayAudioTask("Audio/batteries_remaining"))
+		.Then(new PlayAudioTask("Audio/goodbye"))
+		.Then(new ActionTask(()=>CwalEventManager.instance.Raise(new EndCallEvent())));
+		TaskManager.instance.AddTask(t);
+	}
 
+	public void DidntUnderstand(){
+		Debug.Log("didnt understand");
+		PlayAudioTask t = new PlayAudioTask(didntUnderstand);
+		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
+		TaskManager.instance.AddTask(t);
 	}
 
 	public string[] getSolutionKeywords(){

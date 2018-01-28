@@ -78,9 +78,11 @@ public class GameManager : MonoBehaviour {
 		}
 
 		if(failureKeywordsFound >= 2){
+			Debug.Log("incorrect");
 			incorrectCommandGiven();
 		}
 		else if (successKeyWordsFound >= 2){
+			Debug.Log("correct");
 			myCar.solveCurrentProblem();
 		} 
 		else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
@@ -93,13 +95,14 @@ public class GameManager : MonoBehaviour {
 			myCar.playAudioDescriptionOfProblem();
 		} else {
 			// incorrect solution?
-			myCar.answerIncorrectly();
+			myCar.DidntUnderstand();
 		}
 	}
 
 	void incorrectCommandGiven(){
 		setGameState(GAME_STATE.SPEAKING);
 		// CWAL CODE GOES HERE
+		myCar.answerIncorrectly();
 	}
 
 	void oldCheckTextForKeyWords(string text){
