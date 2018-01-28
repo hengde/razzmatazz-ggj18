@@ -9,7 +9,7 @@ public class Car : MonoBehaviour {
 		ProblemTypes.PartNotWorking,
 		ProblemTypes.WarningLight,
 	};
-	string currentProblemType;
+	public string currentProblemType;
 
 	// PART NOT WORKING
 	public string [] problemParts;
