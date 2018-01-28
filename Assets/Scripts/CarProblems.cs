@@ -77,6 +77,8 @@ public static class CarProblems{
             allStrings[i+j] = funnySoundSolutions[i];
         };
         j += funnySoundSolutions.Length;
+
+        return allStrings;
     }
 
     static int getIndexInChart(int row, int col, bool b0, bool b1, bool b2){
