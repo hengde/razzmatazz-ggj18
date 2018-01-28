@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviour {
 			incorrectCommandGiven();
 		}
 		else if (successKeyWordsFound >= 2){
-			setGameState(GAME_STATE.SPEAKING);
 			myCar.solveCurrentProblem();
 		} 
 		else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
@@ -94,7 +93,6 @@ public class GameManager : MonoBehaviour {
 			myCar.playAudioDescriptionOfProblem();
 		} else {
 			// incorrect solution?
-			Debug.Log("MAKE PROBLEM WORSE");
 			PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
 			t.Then(new ActionTask(()=>setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 			TaskManager.instance.AddTask(t);
@@ -152,10 +150,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void SpeakingUpdate(){
-		// if(!aSource.isPlaying){
-		// 	// setGameState(GAME_STATE.NONE);
-		// 	// Invoke("allowInput", 1);
-		// }
 	}
 
 	// void allowInput(){
