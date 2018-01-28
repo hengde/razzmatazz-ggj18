@@ -162,7 +162,7 @@ public class Car : MonoBehaviour {
 			break;
 		case ReportTypes.numberInCenter: {
 			if (numberInStar == 21) { audioPath += "twenty_one_in_center"; }
-			if (numberInStar == 19) { audioPath += "nineten_in_center"; }
+			if (numberInStar == 19) { audioPath += "nineteen_in_center"; }
 			if (numberInStar == 82) { audioPath += "eighty_two_in_center"; }
 			break;
 		}
