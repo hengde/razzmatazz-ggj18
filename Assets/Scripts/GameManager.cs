@@ -71,9 +71,7 @@ public class GameManager : MonoBehaviour {
 			myCar.playAudioDescriptionOfProblem();
 		} else {
 			// incorrect solution?
-			PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
-			t.Then(new ActionTask(()=>setGameState(GAME_STATE.WAIT_FOR_INPUT)));
-			TaskManager.instance.AddTask(t);
+			myCar.answerIncorrectly();
 		}
 	}
 
