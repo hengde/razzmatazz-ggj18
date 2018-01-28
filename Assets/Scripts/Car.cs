@@ -30,7 +30,7 @@ public class Car : MonoBehaviour {
 	void Awake () {
 		setCurrentProblem();
 		Debug.Log(getSolutionKeywords());
-		currentProblems = Random.Range(2,4);
+		countProblemsRemaining = Random.Range(2,4);
 	}
 	
 	// Update is called once per frame
