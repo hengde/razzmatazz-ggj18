@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void checkTextForKeyWords(string text){
+		setGameState(GAME_STATE.SPEAKING);
 		Debug.Log(text+" "+myCar.getSolutionKeywords());
 		if(text.ToLower().Contains(myCar.getSolutionKeywords())){
 			aSource.clip = Resources.Load<AudioClip>("Audio/win");
@@ -127,10 +128,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void SpeakingUpdate(){
-		if(!aSource.isPlaying){
-			setGameState(GAME_STATE.NONE);
-			Invoke("allowInput", 1);
-		}
+		// if(!aSource.isPlaying){
+		// 	// setGameState(GAME_STATE.NONE);
+		// 	// Invoke("allowInput", 1);
+		// }
 	}
 
 	// void allowInput(){
@@ -151,6 +152,7 @@ public class GameManager : MonoBehaviour {
 		currentState = newState;
 		switch(newState){
 		case GAME_STATE.NONE: 
+			Debug.Log("set to none");
 			StateUpdate = NoneUpdate;
 			break;
 		case GAME_STATE.WAIT_FOR_INPUT:
