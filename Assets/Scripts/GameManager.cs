@@ -111,8 +111,12 @@ public class GameManager : MonoBehaviour {
 			myCar.reportState(ReportTypes.warningFrame);
 		} else if ( isWarningLight && (text.ToLower().Contains("points")) ) {
 			myCar.reportState(ReportTypes.pointsInStar);
-		} else if ( isWarningLight && (text.ToLower().Contains("number") || text.ToLower().Contains("center") || text.ToLower().Contains("middle"))) {
-			myCar.reportState(ReportTypes.numberInCenter);
+		} else if ( text.ToLower().Contains("number") || text.ToLower().Contains("center") || text.ToLower().Contains("middle") ) {
+			if (isWarningLight){
+				myCar.reportState(ReportTypes.numberInCenter);
+			} else {
+				myCar.DidntUnderstand();
+			}
 		}
 		
 		else if (text.ToLower().Contains("repeat") || text.ToLower().Contains("again") || text.ToLower().Contains("problem")) {
