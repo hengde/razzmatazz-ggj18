@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1462,7 +1462,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -1869,10 +1868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c2f5ba8ba56458799bfc41a129d9a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_SIZE: 8.3
-  MIN_SIZE: 7.7
-  GROWTH_RATE: 0.025
-  stopped: 0
+  CarAudio: {fileID: 1182315905}
 --- !u!1 &2081706275
 GameObject:
   m_ObjectHideFlags: 0

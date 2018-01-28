@@ -640,6 +640,10 @@ MonoBehaviour:
   initialPrompt: {fileID: 2081706277}
   currentPrompt: {fileID: 0}
   aSource: {fileID: 0}
+  timeUntilCallStarts: 0
+  lastCallEndedTime: 0
+  ringingScreen: {fileID: 0}
+  inCallScreen: {fileID: 0}
 --- !u!4 &1182315904
 Transform:
   m_ObjectHideFlags: 0
@@ -744,8 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d622c46613c4ebd89e61508e437e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  problemTypes:
-  - part_not_working
+  currentProblemType: 
   problemParts:
   - brake_shift
   - transmission
@@ -754,8 +757,6 @@ MonoBehaviour:
   - emitting_smoke
   - stuck_in_place
   - shaking_uncontrollably
-  problemSounds: []
-  substances: []
 --- !u!114 &1182315907
 MonoBehaviour:
   m_ObjectHideFlags: 0
