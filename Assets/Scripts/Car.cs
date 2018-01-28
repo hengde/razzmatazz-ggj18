@@ -104,16 +104,31 @@ public class Car : MonoBehaviour {
 	int countProblemsRemaining;
 	const int MAX_PROBLEMS = 5;
 
+	int batteriesRemaining = 3;
+
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		setCurrentProblem();
 		Debug.Log(getSolutionKeywords()[0] + " " +getSolutionKeywords()[2]);
-		countProblemsRemaining = Random.Range(2,4);
+		countProblemsRemaining = 3;
+		startCall();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	void startCall(){
+		Debug.Log("Start call");
+		GameManager.instance.setGameState(GAME_STATE.SPEAKING);
+		PlayAudioTask t = new PlayAudioTask("Audio/identify");
+		t.Then(new PlayAudioTask("Audio/system_ops_at"))
+			.Then(new PlayAudioTask("Audio/forty_percent"))
+			.Then(new PlayAudioTask("Audio/three"))
+			.Then(new PlayAudioTask("Audio/batteries_remaining"))
+			.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
+		TaskManager.instance.AddTask(t);
 	}
 
 	void setCurrentProblem() {

@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour {
 
 	void Start(){
 		//setAndPlayPrompt(initialPrompt);
-		setGameState(GAME_STATE.SPEAKING);
-		myCar.playAudioDescriptionOfProblem();
+		//setGameState(GAME_STATE.SPEAKING);
+		//myCar.playAudioDescriptionOfProblem();
 	}
 
 	void OnDestroy(){
