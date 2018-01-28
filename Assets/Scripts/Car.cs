@@ -122,6 +122,7 @@ public class Car : MonoBehaviour {
 			t.Then(new PlayAudioTask(percentFile))
 				.Then(new PlayAudioTask("Audio/next_problem"))
 				.Then(new ActionTask(()=>playAudioDescriptionOfProblem()));
+			TaskManager.instance.AddTask(t);
 		}
 	}
 

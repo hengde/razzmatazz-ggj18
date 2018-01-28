@@ -57,9 +57,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void checkTextForKeyWords(string text){
+		setGameState(GAME_STATE.SPEAKING);
 		Debug.Log(text+" "+myCar.getSolutionKeywords());
 		if(text.ToLower().Contains(myCar.getSolutionKeywords())){
-			setGameState(GAME_STATE.SPEAKING);
 			myCar.solveCurrentProblem();
 		} else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
 			myCar.reportState(0);
@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour {
 			myCar.playAudioDescriptionOfProblem();
 		} else {
 			// incorrect solution?
-			Debug.Log("MAKE PROBLEM WORSE");
 			PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
 			t.Then(new ActionTask(()=>setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 			TaskManager.instance.AddTask(t);
@@ -124,10 +123,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void SpeakingUpdate(){
-		if(!aSource.isPlaying){
-			setGameState(GAME_STATE.NONE);
-			Invoke("allowInput", 1);
-		}
+
 	}
 
 	void allowInput(){
