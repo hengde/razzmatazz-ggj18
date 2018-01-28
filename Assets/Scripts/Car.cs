@@ -4,23 +4,85 @@ using UnityEngine;
 
 public class Car : MonoBehaviour {
 
-	public string [] problemTypes;
+	// PROBLEM TYPES
+	private string [] problemTypes = new string[] {
+		ProblemTypes.PartNotWorking,
+	};
+	string currentProblemType;
+
+	// PART NOT WORKING
 	public string [] problemParts;
 	public string [] problemReported;
-	public string [] problemSounds;
-	public string [] substances;
 
 	bool brakeShift2005;
 	bool carburetorValveOpen;
 	bool transmissionInFirstGear;
 
-	string currentProblemType;
 	string currentProblemPart;
 	string currentProblemReported;
-	string currentProblemSound;
-	string currentSubtance;
-	string currentSubstancePart;
 
+	// FUNNY SOUND
+	private string[] carManufacturers = new string[] {
+		Manufacturers.Toyota,
+		Manufacturers.Honda,
+		Manufacturers.Subaru,
+	};
+
+	private string[] possibleSounds = new string[] {
+		Sounds.sound0,
+		Sounds.sound1,
+		Sounds.sound2,
+	};
+
+	bool isToyotaCorolla;
+	bool isHondaCivic;
+	bool isSubaruOutback;
+	
+	string currentProblemSound;
+	string currentManufacturer;
+	
+	// SUBSTANCE
+	private string[] possibleSubstances = new string[] {
+		Substances.BlackOil,
+		Substances.RedOil,
+		Substances.Foam,
+	};
+
+	private string[] possibleSubstanceParts = new string[] {
+		SubstanceEmitters.Intake,
+		SubstanceEmitters.PumpValve,
+		SubstanceEmitters.Transmission,
+	};
+
+	bool RedIntakeLight;
+	bool FoamReservesFull;
+	bool PinkOilPump;
+
+	string currentSubstancePart;
+	string currentSubtance;
+
+	// WARNING LIGHTS
+	private string[] possibleWarningFrames = new string[]{
+		WarningLightFrames.HorizontalScroll,
+		WarningLightFrames.Paper,
+		WarningLightFrames.VerticalScroll,
+	};
+
+	private int[] possibleStarPointCounts = new int[]{ 10, 7, 8 };
+
+	bool IsMultipleOfSeven;
+	bool EndsInNine;
+	bool InFibonacciSequence;
+
+	string currentWarningFrame;
+	int currentStarPoints;
+	int numberInStar;
+
+	int GenerateCenterNumber(int starPoints){
+		return 0; // TODO: Implement this function properly
+	}
+
+	// MISC
 	string didntUnderstand = "didnt_understand";
 
 	int countProblemsRemaining;
@@ -54,7 +116,7 @@ public class Car : MonoBehaviour {
 	}
 
 	void setCurrentProblem() {
-		currentProblemType = problemTypes[0];
+		currentProblemType = problemTypes[Random.Range(0,problemParts.Length)];
 		currentProblemPart = problemParts[Random.Range(0,problemParts.Length)];
 		currentProblemReported = problemReported[Random.Range(0,problemReported.Length)];
 		brakeShift2005 = Random.Range(0,2) == 1 ? true : false;
@@ -92,7 +154,7 @@ public class Car : MonoBehaviour {
 	public void playAudioDescriptionOfProblem(){
 		GameManager.instance.setGameState(GAME_STATE.SPEAKING);
 		Debug.Log("hi!");
-		if(currentProblemType == "part_not_working"){
+		if(currentProblemType == ProblemTypes.PartNotWorking){
 			Debug.Log("gorp");
 			string partPath = "Audio/"+currentProblemPart;
 			string reportedPath = "Audio/"+currentProblemReported;
@@ -165,7 +227,7 @@ public class Car : MonoBehaviour {
 
 	public string[] getSolutionKeywords(){
 		switch(currentProblemType){
-		case "part_not_working":
+		case ProblemTypes.PartNotWorking:
 			int row = 0;
 			int col = 0;
 			switch(currentProblemPart){
