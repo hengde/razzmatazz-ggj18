@@ -7,6 +7,7 @@ public class Car : MonoBehaviour {
 	// PROBLEM TYPES
 	private string [] problemTypes = new string[] {
 		ProblemTypes.PartNotWorking,
+		ProblemTypes.WarningLight,
 	};
 	public string currentProblemType;
 
