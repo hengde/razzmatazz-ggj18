@@ -7,6 +7,7 @@ public class Car : MonoBehaviour {
 	// PROBLEM TYPES
 	private string [] problemTypes = new string[] {
 		ProblemTypes.PartNotWorking,
+		ProblemTypes.WarningLight,
 	};
 	string currentProblemType;
 
@@ -54,7 +55,7 @@ public class Car : MonoBehaviour {
 		SubstanceEmitters.Transmission,
 	};
 
-	bool RedIntakeLight;
+	bool RedIntakeLightIsOn;
 	bool FoamReservesFull;
 	bool PinkOilPump;
 
@@ -119,6 +120,9 @@ public class Car : MonoBehaviour {
 		currentProblemType = problemTypes[Random.Range(0,problemParts.Length)];
 		currentProblemPart = problemParts[Random.Range(0,problemParts.Length)];
 		currentProblemReported = problemReported[Random.Range(0,problemReported.Length)];
+		currentWarningFrame = possibleWarningFrames[Random.Range(0,possibleWarningFrames.Length)];
+		currentStarPoints = possibleStarPointCounts[Random.Range(0,possibleStarPointCounts.Length)];
+		numberInStar = GenerateCenterNumber(currentStarPoints);
 		brakeShift2005 = Random.Range(0,2) == 1 ? true : false;
 		carburetorValveOpen = Random.Range(0,2) == 1 ? true : false;
 		transmissionInFirstGear = Random.Range(0,2) ==1 ? true : false;
@@ -132,15 +136,33 @@ public class Car : MonoBehaviour {
 		GameManager.instance.setGameState(GAME_STATE.SPEAKING);
 		string audioPath = "Audio/";
 		switch(state){
-		case 0:
+		case ReportTypes.brakeShift:
 			audioPath += brakeShift2005 ? "brake_shift_report_05" : "brake_shift_report_14";
 			break;
-		case 1:
+		case ReportTypes.valve:
 			audioPath += carburetorValveOpen ? "carb_valve_open" : "carb_valve_closed";
 			break;
-		case 2:
+		case ReportTypes.transmission:
 			audioPath += transmissionInFirstGear ? "transmission_first" : "transmission_third";
 			break;
+		case ReportTypes.numberInCenter: {
+			if (numberInStar == 21) { audioPath += "twenty_one_in_center"; }
+			if (numberInStar == 19) { audioPath += "nineten_in_center"; }
+			if (numberInStar == 82) { audioPath += "eighty_two_in_center"; }
+			break;
+		}
+		case ReportTypes.warningFrame: {
+			if (currentWarningFrame == WarningLightFrames.HorizontalScroll) { audioPath += "horizontal_scroll"; }
+			if (currentWarningFrame == WarningLightFrames.VerticalScroll) { audioPath += "vertical_scroll"; }
+			if (currentWarningFrame == WarningLightFrames.Paper) { audioPath += "paper"; }
+			break;
+		}
+		case ReportTypes.pointsInStar: {
+			if (currentStarPoints == 10) { audioPath += "ten_point_star"; }
+			if (currentStarPoints == 7) { audioPath += "seven_point_star"; }
+			if (currentStarPoints == 8) { audioPath += "eight_point_star"; }
+			break;
+		}
 		default:
 			audioPath += didntUnderstand;
 			break;
