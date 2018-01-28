@@ -165,36 +165,18 @@ public class Car : MonoBehaviour {
 			if (numberInStar == 21) { audioPath += "twenty_one_in_center"; }
 			if (numberInStar == 19) { audioPath += "nineten_in_center"; }
 			if (numberInStar == 82) { audioPath += "eighty_two_in_center"; }
-			// TODO: Remove this chunk
-			Debug.LogWarning(audioPath);
-			PlayAudioTask n = new PlayAudioTask("Audio/my");
-			n.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
-			TaskManager.instance.AddTask(n);
-			return;
 			break;
 		}
 		case ReportTypes.warningFrame: {
 			if (currentWarningFrame == WarningLightFrames.HorizontalScroll) { audioPath += "horizontal_scroll"; }
 			if (currentWarningFrame == WarningLightFrames.VerticalScroll) { audioPath += "vertical_scroll"; }
 			if (currentWarningFrame == WarningLightFrames.Paper) { audioPath += "paper"; }
-			// TODO: Remove this chunk
-			Debug.LogWarning(audioPath);
-			PlayAudioTask n = new PlayAudioTask("Audio/my");
-			n.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
-			TaskManager.instance.AddTask(n);
-			return;
 			break;
 		}
 		case ReportTypes.pointsInStar: {
 			if (currentStarPoints == 10) { audioPath += "ten_point_star"; }
 			if (currentStarPoints == 7) { audioPath += "seven_point_star"; }
 			if (currentStarPoints == 8) { audioPath += "eight_point_star"; }
-			// TODO: Remove this chunk
-			Debug.LogWarning(audioPath);
-			PlayAudioTask n = new PlayAudioTask("Audio/my");
-			n.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
-			TaskManager.instance.AddTask(n);
-			return;
 			break;
 		}
 		default:
@@ -224,10 +206,9 @@ public class Car : MonoBehaviour {
 			TaskManager.instance.AddTask(t);
 		}
 		else if (currentProblemType == ProblemTypes.WarningLight){
-			// TODO: Update this chunk
-			Debug.LogWarning("My warning light is on");
 			PlayAudioTask t = new PlayAudioTask("Audio/my");
-			t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
+			t.Then(new PlayAudioTask("Audio/warning_light_is_on"))
+				.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 			TaskManager.instance.AddTask(t);
 		}
 	}
