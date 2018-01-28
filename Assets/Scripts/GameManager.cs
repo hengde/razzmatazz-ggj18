@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour {
 		
 		else if (isWarningLight && (text.ToLower().Contains("describe") || text.ToLower().Contains("look") || text.ToLower().Contains("looks") )) {
 			myCar.reportState(ReportTypes.warningFrame);
-		} else if ( isWarningLight && (text.ToLower().Contains("Points")) ) {
+		} else if ( isWarningLight && (text.ToLower().Contains("points")) ) {
 			myCar.reportState(ReportTypes.pointsInStar);
 		} else if ( isWarningLight && (text.ToLower().Contains("number") || text.ToLower().Contains("center") || text.ToLower().Contains("middle"))) {
 			myCar.reportState(ReportTypes.numberInCenter);
