@@ -78,8 +78,23 @@ public class Car : MonoBehaviour {
 	int currentStarPoints;
 	int numberInStar;
 
+	// only need to record dialogue for: 21, 19, 82
 	int GenerateCenterNumber(int starPoints){
-		return 0; // TODO: Implement this function properly
+		switch(starPoints){
+			case 10:{
+				IsMultipleOfSeven = Random.Range(0,2) == 1;
+				return IsMultipleOfSeven ? 21 : 19;
+			};
+			case 7:{
+				EndsInNine = Random.Range(0,2) == 1;
+				return EndsInNine ? 19 : 82;
+			}
+			case 8:{
+				InFibonacciSequence = Random.Range(0,2) == 1;
+				return InFibonacciSequence ? 21 : 82;
+			}
+		}
+		return 0;
 	}
 
 	// MISC
