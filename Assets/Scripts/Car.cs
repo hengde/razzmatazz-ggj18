@@ -337,7 +337,7 @@ public class Car : MonoBehaviour {
 
 	public string[] getSolutionKeywords(){
 		switch(currentProblemType){
-		case ProblemTypes.PartNotWorking:
+		case ProblemTypes.PartNotWorking:{
 			int row = 0;
 			int col = 0;
 			switch(currentProblemPart){
@@ -352,6 +352,23 @@ public class Car : MonoBehaviour {
 			}
 			string[] strings = CarProblems.GetKeywordsForPartProblem(row, col, brakeShift2005, !carburetorValveOpen, !brakeShift2005);
 			return strings;
+		}
+		case ProblemTypes.WarningLight:{
+			int row = 0;
+			int col = 0;
+			switch(currentWarningFrame){
+				case WarningLightFrames.VerticalScroll:   row = 0; break;
+				case WarningLightFrames.Paper:            row = 1; break;
+				case WarningLightFrames.HorizontalScroll: row = 2; break;
+			}
+			switch(currentStarPoints){
+				case 10: col = 0; break;
+				case 7:  col = 1; break;
+				case 8:  col = 2; break;
+			}
+			string[] strings = CarProblems.GetKeywordsForLightProblem(row, col, IsMultipleOfSeven, EndsInNine, InFibonacciSequence);
+			return strings;
+		}
 		default:
 			break;
 		}
