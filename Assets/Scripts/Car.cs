@@ -217,7 +217,7 @@ public class Car : MonoBehaviour {
 		if(countProblemsRemaining == 0) {
 			PlayAudioTask t = new PlayAudioTask("Audio/win");
 			t.Then(new ActionTask(()=>CwalEventManager.instance.Raise(new EndCallEvent())));
-			TaskManager.AddTask(t);
+			TaskManager.instance.AddTask(t);
 			// GameManager.instance.aSource.clip = Resources.Load<AudioClip>("Audio/win");
 			// GameManager.instance.aSource.Play();
 			// GameManager.instance.setGameState(GAME_STATE.VICTORY);
