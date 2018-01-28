@@ -26,18 +26,23 @@ public class GameManager : MonoBehaviour {
 	public DialoguePrompt initialPrompt;
 	public DialoguePrompt currentPrompt;
 
-	AudioSource aSource;
+	public AudioSource aSource;
 
 	private delegate void stateUpdate();
 	private stateUpdate StateUpdate;
 
+	Car myCar;
+
 	void Awake(){
 		CwalEventManager.instance.AddListener<GetFinalTextEvent>(getText);
 		aSource =GetComponent<AudioSource>();
+		myCar = GetComponent<Car>();
 	}
 
 	void Start(){
-		setAndPlayPrompt(initialPrompt);
+		//setAndPlayPrompt(initialPrompt);
+		setGameState(GAME_STATE.SPEAKING);
+		myCar.playAudioDescriptionOfProblem();
 	}
 
 	void OnDestroy(){
@@ -52,6 +57,29 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void checkTextForKeyWords(string text){
+		Debug.Log(text+" "+myCar.getSolutionKeywords());
+		if(text.ToLower().Contains(myCar.getSolutionKeywords())){
+			aSource.clip = Resources.Load<AudioClip>("Audio/win");
+			aSource.Play();
+			setGameState(GAME_STATE.VICTORY);
+		} else if (text.ToLower().Contains("brake shift") || text.ToLower().Contains("break shift")) {
+			myCar.reportState(0);
+		} else if (text.ToLower().Contains("carburetor valve")) {
+			myCar.reportState(1);
+		} else if (text.ToLower().Contains("transmission")) {
+			myCar.reportState(2);
+		} else if (text.ToLower().Contains("repeat") || text.ToLower().Contains("again") || text.ToLower().Contains("problem")) {
+			myCar.playAudioDescriptionOfProblem();
+		} else {
+			// incorrect solution?
+			Debug.Log("MAKE PROBLEM WORSE");
+			PlayAudioTask t = new PlayAudioTask("Audio/didnt_understand");
+			t.Then(new ActionTask(()=>setGameState(GAME_STATE.WAIT_FOR_INPUT)));
+			TaskManager.instance.AddTask(t);
+		}
+	}
+
+	void oldCheckTextForKeyWords(string text){
 		Debug.Log("CHECKING"+text);
 		bool gotMatch = false;
 		if(currentPrompt.keywords.Length > 0){
@@ -107,6 +135,10 @@ public class GameManager : MonoBehaviour {
 		setGameState(GAME_STATE.WAIT_FOR_INPUT);
 	}
 
+	void VictoryUpdate(){
+
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
@@ -125,10 +157,13 @@ public class GameManager : MonoBehaviour {
 		case GAME_STATE.SPEAKING:
 			StateUpdate = SpeakingUpdate;
 			break;
+		case GAME_STATE.VICTORY:
+			StateUpdate = VictoryUpdate;
+			break;
 		
 		}
 	}
 
 }
 	
-public enum GAME_STATE{NONE, WAIT_FOR_INPUT, SPEAKING};
+public enum GAME_STATE{NONE, WAIT_FOR_INPUT, SPEAKING, VICTORY};
