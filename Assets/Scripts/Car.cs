@@ -272,7 +272,7 @@ public class Car : MonoBehaviour {
 
 	public void DidntUnderstand(){
 		Debug.Log("didnt understand");
-		PlayAudioTask t = new PlayAudioTask(didntUnderstand);
+		PlayAudioTask t = new PlayAudioTask("Audio/" + didntUnderstand);
 		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 		TaskManager.instance.AddTask(t);
 	}
