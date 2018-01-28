@@ -7,6 +7,7 @@ public class Car : MonoBehaviour {
 	// PROBLEM TYPES
 	private string [] problemTypes = new string[] {
 		ProblemTypes.PartNotWorking,
+		ProblemTypes.WarningLight,
 	};
 	public string currentProblemType;
 
@@ -79,7 +80,21 @@ public class Car : MonoBehaviour {
 	int numberInStar;
 
 	int GenerateCenterNumber(int starPoints){
-		return 0; // TODO: Implement this function properly
+		switch(starPoints){
+			case 10:{
+				IsMultipleOfSeven = Random.Range(0,2) == 1;
+				return IsMultipleOfSeven ? 21 : 19;
+			};
+			case 7:{
+				EndsInNine = Random.Range(0,2) == 1;
+				return EndsInNine ? 19 : 82;
+			}
+			case 8:{
+				InFibonacciSequence = Random.Range(0,2) == 1;
+				return InFibonacciSequence ? 21 : 82;
+			}
+		}
+		return 0;
 	}
 
 	// MISC
@@ -118,6 +133,11 @@ public class Car : MonoBehaviour {
 		currentProblemType = problemTypes[Random.Range(0,problemTypes.Length)];
 		currentProblemPart = problemParts[Random.Range(0,problemParts.Length)];
 		currentProblemReported = problemReported[Random.Range(0,problemReported.Length)];
+		
+		currentWarningFrame = possibleWarningFrames[Random.Range(0,possibleWarningFrames.Length)];
+		currentStarPoints = possibleStarPointCounts[Random.Range(0,possibleStarPointCounts.Length)];
+		numberInStar = GenerateCenterNumber(currentStarPoints);
+
 		brakeShift2005 = Random.Range(0,2) == 1 ? true : false;
 		carburetorValveOpen = Random.Range(0,2) == 1 ? true : false;
 		transmissionInFirstGear = Random.Range(0,2) ==1 ? true : false;
@@ -131,15 +151,33 @@ public class Car : MonoBehaviour {
 		GameManager.instance.setGameState(GAME_STATE.SPEAKING);
 		string audioPath = "Audio/";
 		switch(state){
-		case 0:
+		case ReportTypes.brakeShift:
 			audioPath += brakeShift2005 ? "brake_shift_report_05" : "brake_shift_report_14";
 			break;
-		case 1:
+		case ReportTypes.valve:
 			audioPath += carburetorValveOpen ? "carb_valve_open" : "carb_valve_closed";
 			break;
-		case 2:
+		case ReportTypes.transmission:
 			audioPath += transmissionInFirstGear ? "transmission_first" : "transmission_third";
 			break;
+		case ReportTypes.numberInCenter: {
+			if (numberInStar == 21) { audioPath += "twenty_one_in_center"; }
+			if (numberInStar == 19) { audioPath += "nineten_in_center"; }
+			if (numberInStar == 82) { audioPath += "eighty_two_in_center"; }
+			break;
+		}
+		case ReportTypes.warningFrame: {
+			if (currentWarningFrame == WarningLightFrames.HorizontalScroll) { audioPath += "horizontal_scroll"; }
+			if (currentWarningFrame == WarningLightFrames.VerticalScroll) { audioPath += "vertical_scroll"; }
+			if (currentWarningFrame == WarningLightFrames.Paper) { audioPath += "paper"; }
+			break;
+		}
+		case ReportTypes.pointsInStar: {
+			if (currentStarPoints == 10) { audioPath += "ten_point_star"; }
+			if (currentStarPoints == 7) { audioPath += "seven_point_star"; }
+			if (currentStarPoints == 8) { audioPath += "eight_point_star"; }
+			break;
+		}
 		default:
 			audioPath += didntUnderstand;
 			break;
@@ -163,6 +201,12 @@ public class Car : MonoBehaviour {
 			t.Then(new PlayAudioTask(partPath))
 				.Then(new PlayAudioTask("Audio/is"))
 				.Then(new PlayAudioTask(reportedPath))
+				.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
+			TaskManager.instance.AddTask(t);
+		}
+		else if (currentProblemType == ProblemTypes.WarningLight){
+			PlayAudioTask t = new PlayAudioTask("Audio/my");
+			t.Then(new PlayAudioTask("Audio/warning_light_is_on"))
 				.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 			TaskManager.instance.AddTask(t);
 		}
@@ -216,16 +260,12 @@ public class Car : MonoBehaviour {
 		switch(batteriesRemaining){
 			case 1:
 				return "Audio/one";
-				break;
 			case 2:
 				return "Audio/two";
-				break;
 			case 3:
 				return "Audio/three";
-				break;
 			default:
 				return "Audio/zero";
-				break;
 		}
 	}
 
@@ -282,7 +322,7 @@ public class Car : MonoBehaviour {
 
 	public string[] getSolutionKeywords(){
 		switch(currentProblemType){
-		case ProblemTypes.PartNotWorking:
+		case ProblemTypes.PartNotWorking:{
 			int row = 0;
 			int col = 0;
 			switch(currentProblemPart){
@@ -297,6 +337,23 @@ public class Car : MonoBehaviour {
 			}
 			string[] strings = CarProblems.GetKeywordsForPartProblem(row, col, brakeShift2005, !carburetorValveOpen, !brakeShift2005);
 			return strings;
+		}
+		case ProblemTypes.WarningLight:{
+			int row = 0;
+			int col = 0;
+			switch(currentWarningFrame){
+				case WarningLightFrames.VerticalScroll:   row = 0; break;
+				case WarningLightFrames.Paper:            row = 1; break;
+				case WarningLightFrames.HorizontalScroll: row = 2; break;
+			}
+			switch(currentStarPoints){
+				case 10: col = 0; break;
+				case 7:  col = 1; break;
+				case 8:  col = 2; break;
+			}
+			string[] strings = CarProblems.GetKeywordsForLightProblem(row, col, IsMultipleOfSeven, EndsInNine, InFibonacciSequence);
+			return strings;
+		}
 		default:
 			break;
 		}

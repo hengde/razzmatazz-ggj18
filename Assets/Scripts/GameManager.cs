@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour {
 			myCar.reportState(ReportTypes.transmission);
 		} 
 		
-		else if (isWarningLight && (text.ToLower().Contains("describe") || text.ToLower().Contains("look") || text.ToLower().Contains("looks") )) {
+		else if (isWarningLight && (text.ToLower().Contains("describe") || text.ToLower().Contains("look") || text.ToLower().Contains("looks") || text.ToLower().Contains("which"))) {
 			myCar.reportState(ReportTypes.warningFrame);
 		} else if ( isWarningLight && (text.ToLower().Contains("points")) ) {
 			myCar.reportState(ReportTypes.pointsInStar);
@@ -129,26 +129,26 @@ public class GameManager : MonoBehaviour {
 		myCar.answerIncorrectly();
 	}
 
-	void oldCheckTextForKeyWords(string text){
-		Debug.Log("CHECKING"+text);
-		bool gotMatch = false;
-		if(currentPrompt.keywords.Length > 0){
-			for(int i=0; i< currentPrompt.keywords.Length; i++){
-				Debug.Log("CHECK "+currentPrompt.keywords[i]);
-				if(text.ToLower().Contains(currentPrompt.keywords[i].ToLower())) {
-					Debug.Log("MATCH");
-					setAndPlayPrompt(currentPrompt.links[i]);
-					gotMatch = true;
-					break;
-				}
-			}
-			if(!gotMatch){
-				setAndPlayPrompt(currentPrompt.defaultLink);
-			}
-		} else {
-			setAndPlayPrompt(currentPrompt.defaultLink);
-		}
-	}
+	// void oldCheckTextForKeyWords(string text){
+	// 	Debug.Log("CHECKING"+text);
+	// 	bool gotMatch = false;
+	// 	if(currentPrompt.keywords.Length > 0){
+	// 		for(int i=0; i< currentPrompt.keywords.Length; i++){
+	// 			Debug.Log("CHECK "+currentPrompt.keywords[i]);
+	// 			if(text.ToLower().Contains(currentPrompt.keywords[i].ToLower())) {
+	// 				Debug.Log("MATCH");
+	// 				setAndPlayPrompt(currentPrompt.links[i]);
+	// 				gotMatch = true;
+	// 				break;
+	// 			}
+	// 		}
+	// 		if(!gotMatch){
+	// 			setAndPlayPrompt(currentPrompt.defaultLink);
+	// 		}
+	// 	} else {
+	// 		setAndPlayPrompt(currentPrompt.defaultLink);
+	// 	}
+	// }
 
 	void setAndPlayPrompt(DialoguePrompt newPrompt) { 
 		
