@@ -240,7 +240,7 @@ public class Car : MonoBehaviour {
 		//		t.Then(new ActionTask(()=>GameManager.instance.setGameState(GAME_STATE.WAIT_FOR_INPUT)));
 		//		TaskManager.instance.AddTask(t);
 		batteriesRemaining -= 1;
-		countProblemsRemaining +=1;
+		//countProblemsRemaining +=1;
 		if(batteriesRemaining == 0){
 			loseGame();
 		} else {
