@@ -26,8 +26,8 @@ using UnityEngine.UI;
 
 public class ExampleStreaming : MonoBehaviour
 {
-    private string _username = "3c83ab3c-e72d-48ba-95b2-4bc27b4f0872";
-    private string _password = "8JWW3UQp7Tmn";
+    private string _username = "e66a9e0d-d158-495f-9cca-8e2b741afaa2";
+    private string _password = "PZ2WIUiPTxVq";
     private string _url = "https://stream.watsonplatform.net/speech-to-text/api";
     
     public Text ResultsField;
